@@ -38,14 +38,11 @@ public class UserDaoImp implements UserDao {
    }
 
    @Override
-   @SuppressWarnings("unchecked")
    public User findUserByCar(int series, String model) {
-      return (User) sessionFactory.getCurrentSession().createQuery("from User u " +
-              "left outer join fetch u.car " +
-              "where u.car.series = :series and " +
-              "u.car.model = :model")
+      return sessionFactory.getCurrentSession().createQuery("select c from Car c " +
+              "where c.series = :series and c.model = :model", Car.class)
               .setParameter("series", series)
               .setParameter("model", model)
-              .getSingleResult();
+              .getSingleResult().getUser();
    }
 }
